@@ -1,38 +1,39 @@
 
+//function for calculating the sip delay
+const CalculateSip = (monthlyinvestment, investmentperiod, rateofreturn, delay) => {
 
-const CalculateSip = (req,res)=>{
-   
-    // const{monthlyinvestment,investmentperiod,rateofreturn,delay}=req.body;
+    var timeduration = (investmentperiod) * 12;        //converting years into months 
+    var rate = (rateofreturn) / 12;                     //calculating rate for per month
+    var timedurationafterdelay = timeduration - delay;                
+ 
+    var starttoday = sipgrowth(monthlyinvestment, timeduration, rate);         //amount get if start from today it will get value from sipgrowth funtion
+    var delayedstart = sipgrowth(monthlyinvestment, timedurationafterdelay, rate);    //amount get if start after delay it will get value from sipgrowth funtion
 
-    var monthlyinvestment=req.body.monthlyinvestment;
-    var investmentperiod=req.body.investmentperiod;
-    var rateofreturn =req.body.rateofreturn;
-    var delay=req.body.delay;
-    
-      var timeduration =(investmentperiod)*12;
-      var rate =(rateofreturn)/12;
-      var timedurationafterdelay = timeduration-delay;
-     
-      var starttoday = sipgrowth(monthlyinvestment,timeduration,rate);
-      var delayedstart = sipgrowth(monthlyinvestment,timedurationafterdelay,rate);
+    var loss = starttoday - delayedstart;     //loss get from the delay of investment
 
-      var loss = starttoday-delayedstart;
-      res.send(loss);
+
+    // returing result in an object form
+    var allinvestmentinfo = {
+        startfromtoday: Math.round(starttoday),
+        delayedstart: Math.round(delayedstart),
+        lossfromdelay: Math.round(loss)
+    }
+    return allinvestmentinfo;
 
 }
 
-function sipgrowth(monthlyinvestment,timeduration,rateofreturn) {
-    var sipCumulation=0;
-    var sipGrowthResult=0;
+//function for calculation of sipgrowth
+function sipgrowth(monthlyinvestment, timeduration, rateofreturn) {
+    var sipCumulation = 0;
+    var sipGrowthResult = 0;
 
     for (let i = 1; i <= timeduration; i++) {
-        sipCumulation = monthlyinvestment * (Math.pow((1+rateofreturn/100),i));
+        sipCumulation = monthlyinvestment * (Math.pow((1 + rateofreturn / 100), i));
         sipGrowthResult += sipCumulation;
     }
 
     return sipGrowthResult;
 }
 
-//  console.log(Math.round(sipgrowth(5000,60,1)));
 
-module.exports=CalculateSip;
+module.exports = CalculateSip;
