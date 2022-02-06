@@ -21,7 +21,7 @@ const Calculatecontrol = (req, res) => {
         var info = servicelogic(monthlyinvestment, investmentperiod, rateofreturn, delay);
 
         // resultant string stores in a variable for sending the response
-        var finalresult = `If you start your investment from today,the final value will be ${info.startfromtoday}.\nIf you start your investment after ${delay} months,the final value will be ${info.delayedstart}.\nAnd it will cause notional loss of :${info.lossfromdelay} in the final value of your investment.`
+        var finalresult = `If you start your investment from today,the final value will be Rs:${info.startfromtoday}.\nIf you start your investment after ${delay} months,the final value will be Rs:${info.delayedstart}.\nAnd it will cause notional loss of Rs:${info.lossfromdelay} in the final value of your investment.`
 
         res.send(finalresult);
     }
